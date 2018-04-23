@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Copy/paste this job script into a text file and submit with the command:
+#    sbatch thefilename
+# job standard output will go to the file slurm-%j.out (where %j is the job ID)
+
+#SBATCH --time=5:00:00   # walltime limit (HH:MM:SS)
+#SBATCH --nodes=2   # number of nodes
+#SBATCH --ntasks-per-node=16   # 16 processor core(s) per node
+#SBATCH --mem=62G   # maximum memory per node
+#SBATCH --job-name="eeobMJ_fp_03"
+#SBATCH --mail-user=mjkang@iastate.edu   # email address
+#SBATCH --mail-type=BEGIN
+#SBATCH --mail-type=END
+#SBATCH --mail-type=FAIL
+
+# LOAD MODULES, INSERT CODE, AND RUN YOUR PROGRAMS HERE
+
+module load raxml;
+raxmlHPC-PTHREADS-SSE3 -T16 -m PROTGAMMAAUTO -p 12345 -#20 -s seq.phy -n T31
+raxmlHPC-PTHREADS-SSE3 -T16 -m PROTGAMMAAUTO -p 12345 -b 1000 -#100 -s seq.phy -n T32
+raxmlHPC-PTHREADS-SSE3 -T16 -m PROTCATAUTO -p 1234 -f b -t RAxML_bestTree.T31 -z RAxML_bootstrap.T32 -n Tfinal30_yesOl
